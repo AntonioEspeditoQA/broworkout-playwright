@@ -5,6 +5,8 @@ export class ExercisesPage {
         this.title = page.getByRole('heading', {
             name: 'Exercícios'
         });
+
+        this.exerciseItems = page.getByRole('listitem');
     }
 
     async goToExercisesPage() {

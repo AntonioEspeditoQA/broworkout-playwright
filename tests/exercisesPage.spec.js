@@ -7,3 +7,9 @@ test('Navigate to Exercises Page', async ({ page }) => {
     await expect(exercisesPage.page).toHaveURL('https://bro-workout-frontend.vercel.app/exercises');
     await expect(exercisesPage.title).toBeVisible();
 });
+
+test('Verify that the exercises grid is displayed', async ({ page }) => {
+    const exercisesPage = new ExercisesPage(page);
+    await exercisesPage.goToExercisesPage();
+    await expect(exercisesPage.exerciseItems.first()).toBeVisible();
+});
