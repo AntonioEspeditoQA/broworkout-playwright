@@ -1,3 +1,4 @@
+import { expect } from '@playwright/test';
 export class ExercisesPage {
     constructor(page) {
         this.page = page;
@@ -7,6 +8,12 @@ export class ExercisesPage {
         });
 
         this.exerciseItems = page.getByRole('listitem');
+        this.addExerciseButton = page.getByRole('button', { name: 'Adicionar exercício' });
+        this.exerciseNameInput = page.getByRole('textbox', { name: 'Nome do Exercício' });
+        this.exerciseVideoUrlInput = page.getByRole('textbox', { name: 'URL do Vídeo (opcional)' });
+        this.exerciseImageUrlInput = page.getByRole('textbox', { name: 'URL da Imagem (opcional)' });
+        this.createExerciseButton = page.getByRole('button', { name: 'Criar' });
+        this.listItem = page.getByRole('listitem');
     }
 
 
@@ -14,13 +21,20 @@ export class ExercisesPage {
         await this.page.goto('https://bro-workout-frontend.vercel.app/exercises');
     }
 
+    async navigateToExercisesPage() {
+        await this.page.goto('https://bro-workout-frontend.vercel.app/exercises');
+        await expect(this.title).toBeVisible();
+        await expect(this.page).toHaveURL('https://bro-workout-frontend.vercel.app/exercises');
+        await expect(this.title).toBeVisible();
+    }
+
     async createNewExercise(exerciseName) {
         process.env.EXERCISENAME = exerciseName;
-        await this.page.getByRole('button', { name: 'Adicionar exercício' }).click();
-        await this.page.getByRole('textbox', { name: 'Nome do Exercício' }).fill(exerciseName);
-        await this.page.getByRole('textbox', { name: 'URL do Vídeo (opcional)' }).fill('https://www.youtube.com/shorts/6jG3FgNZa0Q');
-        await this.page.getByRole('textbox', { name: 'URL da Imagem (opcional)' }).fill('https://bikeregistrada.com.br/blog/wp-content/uploads/2024/05/persondoingindoorcycling1-667x6941-1.jpeg');
-        await this.page.getByRole('button', { name: 'Criar' }).click();
+        await this.addExerciseButton.click();
+        await this.exerciseNameInput.fill(exerciseName);
+        await this.exerciseVideoUrlInput.fill('https://www.youtube.com/shorts/6jG3FgNZa0Q');
+        await this.exerciseImageUrlInput.fill('https://bikeregistrada.com.br/blog/wp-content/uploads/2024/05/persondoingindoorcycling1-667x6941-1.jpeg');
+        await this.createExerciseButton.click();
         const count = await this.exerciseItems.count();
         for (let i = 0; i < count; i++) {
             const item = this.exerciseItems.nth(i);
@@ -33,6 +47,6 @@ export class ExercisesPage {
     }
 
     async searchNewExercise(exerciseName) {
-        await this.page.locator('li:nth-child(169)').textContent(exerciseName);
+        await this.listItem.last().textContent(exerciseName);
     }
 }
