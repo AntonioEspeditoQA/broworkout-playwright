@@ -3,10 +3,7 @@ export class ExercisesPage {
     constructor(page) {
         this.page = page;
 
-        this.title = page.getByRole('heading', {
-            name: 'Exercícios'
-        });
-
+        this.title = page.getByRole('heading', {name: 'Exercícios'});
         this.exerciseItems = page.getByRole('listitem');
         this.addExerciseButton = page.getByRole('button', { name: 'Adicionar exercício' });
         this.exerciseNameInput = page.getByRole('textbox', { name: 'Nome do Exercício' });
