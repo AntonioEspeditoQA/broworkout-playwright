@@ -11,6 +11,7 @@ export class UsersPage {
     process.env.NEW_USER_NAME = faker.person.fullName();
     process.env.NEW_USER_EMAIL = faker.internet.email();
     process.env.NEW_USER_PASSWORD = faker.internet.password();
+    process.env.NEW_WORKOUT_NAME = faker.word.words();
     this.addNewUserButton = page.getByRole('button', { name: 'Adicionar Usuário' });
     this.nameInput = page.getByRole('textbox', { name: 'Nome' });
     this.emailInput = page.getByRole('textbox', { name: 'Email' });
@@ -26,8 +27,10 @@ export class UsersPage {
     this.nameOption = page.getByRole('option', { name: 'Nome' });
     this.operatorComboBox = page.getByRole('combobox', { name: 'Operator contains' });
     this.equalOption = page.getByRole('option', { name: 'equals' });
-    this.filterValueInput = page.getByRole('textbox', { name: 'Value' })
-
+    this.filterValueInput = page.getByRole('textbox', { name: 'Value' });
+    this.newWorkoutButton = page.getByRole('button', { name: 'Adicionar Treino' });
+    this.workoutNameInput = page.getByRole('textbox', { name: 'Nome do Treino' });
+    this.comboboxElement = page.getByRole('combobox');
   }
 
   async goToUsersPage() {
@@ -68,5 +71,24 @@ export class UsersPage {
     await this.page.waitForTimeout(1000);
     await expect(this.userNameCell).toBeVisible();
     await expect(this.userEmailCell).toBeVisible();
+  }
+
+  async addNewWorkoutToUser() {
+    const page = this.page;
+    const newWorkoutName = process.env.NEW_WORKOUT_NAME;
+    const panturrilhaEmPeExercise = page.getByRole('option', { name: 'Panturrilha em Pé' });
+    await this.newWorkoutButton.click();
+    await this.workoutNameInput.fill(newWorkoutName);
+    await this.comboboxElement.click();
+    await panturrilhaEmPeExercise.click();
+    const spinButtonName = ['Repetições', 'Séries', 'Peso (kg)'];
+    for (const name of spinButtonName) {
+      const spinButtonNameInput = page.getByRole('spinbutton', { name: name});
+      await spinButtonNameInput.fill('10');
+    }
+    await this.newWorkoutButton.click();
+    await expect(this.page.getByRole('gridcell', { name: newWorkoutName })).toBeVisible();
+    console.log(newWorkoutName);
+    console.log(this.workoutNameInput);
   }
 }
