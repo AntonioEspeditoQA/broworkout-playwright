@@ -13,3 +13,11 @@ test('Create a new User', async ({ page }) => {
   await usersPage.searchNewUser();
   await usersPage.navigateToUsersPage();
 });
+
+test('Add new workout for the User', async ({ page }) => {
+  const usersPage = new UsersPage(page);
+  await usersPage.navigateToUsersPage();
+  await usersPage.createNewUser();
+  await usersPage.searchNewUser();
+  await usersPage.addNewWorkoutToUser();
+})
