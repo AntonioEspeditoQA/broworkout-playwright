@@ -11,6 +11,7 @@ export class ExercisesPage {
         this.exerciseImageUrlInput = page.getByRole('textbox', { name: 'URL da Imagem (opcional)' });
         this.createExerciseButton = page.getByRole('button', { name: 'Criar' });
         this.listItem = page.getByRole('listitem');
+        this.editExerciseButton = page.getByRole('button', { name: 'Editar' });
     }
 
 
@@ -45,5 +46,10 @@ export class ExercisesPage {
 
     async searchNewExercise(exerciseName) {
         await this.listItem.last().textContent(exerciseName);
+    }
+
+    async clickOnEditExercise() {
+        await expect(this.editExerciseButton).toBeVisible();
+        await this.editExerciseButton.click();
     }
 }

@@ -21,3 +21,9 @@ test('Create a new exercise', async ({ page }) => {
     await exercisesPage.searchNewExercise(exerciseName);
     await expect(exercisesPage.exerciseItems.filter({ hasText: exerciseName })).toBeVisible();
 });
+
+test('Verify that the edit button is displayed on the grid', async ({page}) => {
+    const exercisesPage = new ExercisesPage(page);
+    await exercisesPage.goToExercisesPage();
+    await exercisesPage.clickOnEditExercise();
+});
