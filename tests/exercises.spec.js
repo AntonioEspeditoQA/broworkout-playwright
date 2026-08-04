@@ -27,3 +27,9 @@ test('Verify that the edit button is displayed on the grid', async ({page}) => {
     await exercisesPage.goToExercisesPage();
     await exercisesPage.clickOnEditExercise();
 });
+
+test('Verify that the image is displayed on exercise grid', async ({page}) => {
+    const exercisesPage = new ExercisesPage(page);
+    await exercisesPage.goToExercisesPage();
+    await exercisesPage.verifyImageOnExerciseGrid();
+});

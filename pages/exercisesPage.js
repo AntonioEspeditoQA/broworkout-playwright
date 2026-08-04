@@ -52,4 +52,9 @@ export class ExercisesPage {
         await expect(this.editExerciseButton).toBeVisible();
         await this.editExerciseButton.click();
     }
+
+    async verifyImageOnExerciseGrid() {
+        const image = this.exerciseItems.nth(0).locator('img');
+        await expect(image).toBeVisible();
+    }
 }
