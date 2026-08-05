@@ -12,6 +12,7 @@ export class ExercisesPage {
         this.createExerciseButton = page.getByRole('button', { name: 'Criar' });
         this.listItem = page.getByRole('listitem');
         this.editExerciseButton = page.getByRole('button', { name: 'Editar' });
+        this.deleteExerciseButton = page.getByRole('button', { name: 'Excluir' });
     }
 
 
@@ -56,5 +57,10 @@ export class ExercisesPage {
     async verifyImageOnExerciseGrid() {
         const image = this.exerciseItems.nth(0).locator('img');
         await expect(image).toBeVisible();
+    }
+
+    async clickOnDeleteExercise() {
+        await expect(this.deleteExerciseButton).toBeVisible();
+        await this.deleteExerciseButton.click();
     }
 }
