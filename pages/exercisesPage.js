@@ -30,6 +30,7 @@ export class ExercisesPage {
     async createNewExercise(exerciseName) {
         process.env.EXERCISENAME = exerciseName;
         await this.addExerciseButton.click();
+        await expect(this.page.getByRole('heading', { name: 'Adicionar Novo Exercício' })).toBeVisible();
         await this.exerciseNameInput.fill(exerciseName);
         await this.exerciseVideoUrlInput.fill('https://www.youtube.com/shorts/6jG3FgNZa0Q');
         await this.exerciseImageUrlInput.fill('https://bikeregistrada.com.br/blog/wp-content/uploads/2024/05/persondoingindoorcycling1-667x6941-1.jpeg');
@@ -39,7 +40,7 @@ export class ExercisesPage {
             const item = this.exerciseItems.nth(i);
             const text = await item.textContent();
             console.log(text);
-            if (text?.includes(exerciseName)) {
+            if (text.includes(exerciseName)) {
                 return true;
             }
         }
@@ -62,5 +63,15 @@ export class ExercisesPage {
     async clickOnDeleteExercise() {
         await expect(this.deleteExerciseButton).toBeVisible();
         await this.deleteExerciseButton.click();
+    }
+
+    async clickOnAddNewExerciseButton() {
+        await expect(this.addExerciseButton).toBeVisible();
+        await this.addExerciseButton.click();
+    }
+
+    async clickOnCreateExerciseButton() {
+        await expect(this.createExerciseButton).toBeVisible();
+        await this.createExerciseButton.click();
     }
 }
