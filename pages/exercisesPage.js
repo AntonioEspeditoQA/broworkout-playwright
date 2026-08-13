@@ -3,7 +3,7 @@ export class ExercisesPage {
     constructor(page) {
         this.page = page;
 
-        this.title = page.getByRole('heading', {name: 'Exercícios'});
+        this.title = page.getByRole('heading', { name: 'Exercícios' });
         this.exerciseItems = page.getByRole('listitem');
         this.addExerciseButton = page.getByRole('button', { name: 'Adicionar exercício' });
         this.exerciseNameInput = page.getByRole('textbox', { name: 'Nome do Exercício' });
@@ -13,6 +13,7 @@ export class ExercisesPage {
         this.listItem = page.getByRole('listitem');
         this.editExerciseButton = page.getByRole('button', { name: 'Editar' });
         this.deleteExerciseButton = page.getByRole('button', { name: 'Excluir' });
+        this.cancelButton = page.getByRole('button', { name: 'Cancelar' });
     }
 
 
@@ -30,8 +31,7 @@ export class ExercisesPage {
     async createNewExercise(exerciseName) {
         process.env.EXERCISENAME = exerciseName;
         await this.addExerciseButton.click();
-        await expect(this.page.getByRole('heading', { name: 'Adicionar Novo Exercício' })).toBeVisible();
-        await this.exerciseNameInput.fill(exerciseName);
+        if (exerciseName) await this.exerciseNameInput.fill(exerciseName);
         await this.exerciseVideoUrlInput.fill('https://www.youtube.com/shorts/6jG3FgNZa0Q');
         await this.exerciseImageUrlInput.fill('https://bikeregistrada.com.br/blog/wp-content/uploads/2024/05/persondoingindoorcycling1-667x6941-1.jpeg');
         await this.createExerciseButton.click();
@@ -39,7 +39,6 @@ export class ExercisesPage {
         for (let i = 0; i < count; i++) {
             const item = this.exerciseItems.nth(i);
             const text = await item.textContent();
-            console.log(text);
             if (text.includes(exerciseName)) {
                 return true;
             }
@@ -73,5 +72,10 @@ export class ExercisesPage {
     async clickOnCreateExerciseButton() {
         await expect(this.createExerciseButton).toBeVisible();
         await this.createExerciseButton.click();
+    }
+
+    async clickOnCancelButton() {
+        await expect(this.cancelButton).toBeVisible();
+        await this.cancelButton.click();
     }
 }

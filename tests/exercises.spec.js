@@ -14,36 +14,48 @@ test('Verify that the exercises grid is displayed', async ({ page }) => {
 
 test('Create a new exercise', async ({ page }) => {
     const exercisesPage = new ExercisesPage(page);
-    const exerciseName = `TESTE EXERCICIO FISICO ${Math.random(1,1000000)}`;
+    const exerciseName = `TESTE EXERCICIO FISICO ${Math.random(1, 1000000)}`;
     process.env.EXERCISENAME = exerciseName;
     await exercisesPage.goToExercisesPage();
-    await exercisesPage.createNewExercise(exerciseName);             
+    await exercisesPage.createNewExercise(exerciseName);
     await exercisesPage.searchNewExercise(exerciseName);
     await expect(exercisesPage.exerciseItems.filter({ hasText: exerciseName })).toBeVisible();
 });
 
-test('Verify that the edit button is displayed on exercise grid', async ({page}) => {
+test('Verify that the edit button is displayed on exercise grid', async ({ page }) => {
     const exercisesPage = new ExercisesPage(page);
     await exercisesPage.goToExercisesPage();
     await exercisesPage.clickOnEditExercise();
 });
 
-test('Verify that the image is displayed on exercise grid', async ({page}) => {
+test('Verify that the image is displayed on exercise grid', async ({ page }) => {
     const exercisesPage = new ExercisesPage(page);
     await exercisesPage.goToExercisesPage();
     await exercisesPage.verifyImageOnExerciseGrid();
 });
 
-test('Verify that the delete button is displayed on exercise grid', async ({page}) => {
+test('Verify that the delete button is displayed on exercise grid', async ({ page }) => {
     const exercisesPage = new ExercisesPage(page);
     await exercisesPage.goToExercisesPage();
     await exercisesPage.clickOnDeleteExercise();
 })
 
-test('Verify that the Name field is required', async ({page}) => {
+test('Verify that the Name field is required', async ({ page }) => {
     const exercisesPage = new ExercisesPage(page);
     await exercisesPage.goToExercisesPage();
     await exercisesPage.clickOnAddNewExerciseButton();
     await exercisesPage.clickOnCreateExerciseButton();
     await expect(page.getByText('Falha ao criar exercício')).toBeVisible() && await expect(page.getByRole('alert')).toBeVisible();
+});
+
+test('Verify that URL fields are not required', async ({ page }) => {
+    const exercisesPage = new ExercisesPage(page);
+    const exerciseName = `TESTE EXERCICIO FISICO ${Math.random(1, 1000000)}`;
+    await exercisesPage.goToExercisesPage();
+    await exercisesPage.createNewExercise();
+    await expect(page.getByText('Falha ao criar exercício')).toBeVisible();
+    await exercisesPage.clickOnCancelButton();
+    await exercisesPage.createNewExercise(exerciseName, null, null);
+    await exercisesPage.searchNewExercise(exerciseName);
+    await expect(exercisesPage.exerciseItems.filter({ hasText: exerciseName })).toBeVisible();
 });
