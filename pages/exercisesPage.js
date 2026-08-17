@@ -2,7 +2,6 @@ import { expect } from '@playwright/test';
 export class ExercisesPage {
     constructor(page) {
         this.page = page;
-
         this.title = page.getByRole('heading', { name: 'Exercícios' });
         this.exerciseItems = page.getByRole('listitem');
         this.addExerciseButton = page.getByRole('button', { name: 'Adicionar exercício' });
@@ -16,24 +15,19 @@ export class ExercisesPage {
         this.cancelButton = page.getByRole('button', { name: 'Cancelar' });
     }
 
-
-    async goToExercisesPage() {
-        await this.page.goto('https://bro-workout-frontend.vercel.app/exercises');
-    }
-
     async navigateToExercisesPage() {
-        await this.page.goto('https://bro-workout-frontend.vercel.app/exercises');
+        await this.goToExercisesPage();
         await expect(this.title).toBeVisible();
         await expect(this.page).toHaveURL('https://bro-workout-frontend.vercel.app/exercises');
         await expect(this.title).toBeVisible();
     }
 
-    async createNewExercise(exerciseName) {
+    async createNewExercise(exerciseName, exerciseVideoUrl, exerciseImageUrl) {
         process.env.EXERCISENAME = exerciseName;
         await this.addExerciseButton.click();
         if (exerciseName) await this.exerciseNameInput.fill(exerciseName);
-        await this.exerciseVideoUrlInput.fill('https://www.youtube.com/shorts/6jG3FgNZa0Q');
-        await this.exerciseImageUrlInput.fill('https://bikeregistrada.com.br/blog/wp-content/uploads/2024/05/persondoingindoorcycling1-667x6941-1.jpeg');
+        if (exerciseVideoUrl) await this.exerciseVideoUrlInput.fill(exerciseVideoUrl);
+        if (exerciseImageUrl) await this.exerciseImageUrlInput.fill(exerciseImageUrl);
         await this.createExerciseButton.click();
         const count = await this.exerciseItems.count();
         for (let i = 0; i < count; i++) {
